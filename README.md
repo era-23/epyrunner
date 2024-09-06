@@ -1,4 +1,6 @@
 # Epyrunner
+A package for running EPOCH simulations automatically on Viking and training ML models
+
 For this script to work correctly you need to have the following folder structure:
 ```
 .
@@ -17,6 +19,21 @@ For this script to work correctly you need to have the following folder structur
 │ ├── epoch2d
 │ └── epoch3d
 └── ...
+```
+
+# Installation 
+Until this is on PyPI, please install directly from this repo:
+
+```bash
+pip install git+https://github.com/JoelLucaAdams/epyrunner.git@main
+```
+
+or from a local checkout:
+
+```bash
+git clone https://github.com/JoelLucaAdams/epyrunner
+cd epyrunner
+pip install .
 ```
 
 # Initial run - random_sampling.py
