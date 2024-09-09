@@ -75,7 +75,9 @@ parameters = {
 }
 
 # Sets up sampling of simulation and specifies number of times to run each simulation
-hypercube_samples = epyscan.LatinHypercubeSampler(parameters).sample(40)
+hypercube_samples = epyscan.LatinHypercubeSampler(parameters).sample(
+    args.numSimulations
+)
 
 # Takes in the folder and template and starts a counter so each new simulation gets saved to a new folder
 campaign = epyscan.Campaign(deck, (script_path / campaign_dir_name))
