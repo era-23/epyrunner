@@ -1,12 +1,13 @@
 import subprocess
 import time
-from typing import Literal, Dict, Tuple
+from pathlib import Path
+from typing import Literal, Optional
 
-import xarray as xr
-import numpy as np
 import matplotlib.pyplot as plt
-from matplotlib.animation import FuncAnimation
+import numpy as np
+import xarray as xr
 from IPython.display import HTML
+from matplotlib.animation import FuncAnimation
 from quantiphy import Quantity
 
 
@@ -33,8 +34,8 @@ class SlurmJob:
 
     def _format_slurm_jobs(
         self, process: subprocess.CompletedProcess
-    ) -> Dict[str, Literal["PENDING", "RUNNING", "COMPLETING"]]:
-        """Format the job process into a Dict
+    ) -> dict[str, Literal["PENDING", "RUNNING", "COMPLETING"]]:
+        """Format the job process into a dict
 
         Arguments
         ---------
@@ -43,7 +44,7 @@ class SlurmJob:
 
         Returns
         -------
-        Dict:
+        dict:
             The job id and status of the simulation (See https://curc.readthedocs.io/en/latest/running-jobs/squeue-status-codes.html)
         """
         job_statuses = {}
@@ -59,7 +60,7 @@ class SlurmJob:
 
         return job_statuses
 
-    def enqueue_array_job(
+    def enqueue_array_job(  # noqa: PLR0913
         self,
         epoch_path: str,
         epoch_version: Literal["epoch1d", "epoch2d", "epoch3d"],
@@ -103,7 +104,7 @@ class SlurmJob:
             job_name="muons_test_e23"
         )
         """
-        with open(template_path) as f:
+        with Path.open(template_path) as f:
             s = f.read()
 
         s = s.format(
@@ -115,13 +116,14 @@ class SlurmJob:
             file_path=file_path,
         )
 
-        with open(f"{campaign_path}/jobscript.sh", "w") as f:
+        with Path.open(f"{campaign_path}/jobscript.sh", "w") as f:
             f.write(s)
 
         process = subprocess.run(
             ["sbatch", f"{campaign_path}/jobscript.sh"],
             capture_output=True,
             text=True,
+            check=False,
         )
         if process.returncode != 0:
             raise RuntimeError(f"Error submitting job: {process.stderr}")
@@ -136,7 +138,7 @@ class SlurmJob:
 
     def get_running_jobs(
         self,
-    ) -> Dict[str, Literal["PENDING", "RUNNING", "COMPLETING"]]:
+    ) -> dict[str, Literal["PENDING", "RUNNING", "COMPLETING"]]:
         """Get runninng SLURM jobs
 
         Returns
@@ -154,6 +156,7 @@ class SlurmJob:
             ["squeue", "--job", self.job_id, "--Format=jobid,state", "--noheader"],
             capture_output=True,
             text=True,
+            check=False,
         )
         if process.returncode != 0:
             raise RuntimeError(f"Error getting running job status: {process.stderr}")
@@ -162,7 +165,7 @@ class SlurmJob:
 
     def get_job_results(
         self,
-    ) -> Tuple[Dict[str, Literal["COMPLETED"]], Dict[str, Literal["FAILED"]]]:
+    ) -> tuple[dict[str, Literal["COMPLETED"]], dict[str, Literal["FAILED"]]]:
         """Get all SLURM job results
 
         Returns
@@ -174,6 +177,7 @@ class SlurmJob:
             ["sacct", "--job", self.job_id, "--format=jobid,state", "--noheader"],
             capture_output=True,
             text=True,
+            check=False,
         )
         if process.returncode != 0:
             raise RuntimeError(f"Error getting completed job status: {process.stderr}")
@@ -222,20 +226,20 @@ class SlurmJob:
 
 def _get_frame_title(dataset: xr.Dataset, frame: int, display_sdf_name: bool) -> str:
     sdf_name = f"{frame:04d}.sdf" if display_sdf_name else ""
-    time = dataset.isel(time=frame)["time"].values
+    time = dataset.isel(time=frame)["time"].to_numpy()
     return f"$t = {Quantity(time, 's').render(prec=3)}$, {sdf_name}"
 
 
-def generate_animation(
+def generate_animation(  # noqa: PLR0913
     dataset: xr.Dataset,
     target_attribute: str,
-    folder_path: str = None,
+    folder_path: Optional[str] = None,
     display: bool = False,
     display_sdf_name: bool = False,
     fps: int = 10,
     x_axis_coord: str = "X_Grid_mid",
     y_axis_coord: str = "Y_Grid_mid",
-) -> HTML | None:
+) -> Optional[HTML]:
     """Generate an animation for the given target attribute
 
     Arguments
@@ -326,3 +330,4 @@ def generate_animation(
 
     if display:
         return HTML(ani.to_jshtml())
+    return None

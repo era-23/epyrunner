@@ -1,9 +1,10 @@
-from pathlib import Path
 import argparse
 import sys
+from pathlib import Path
 
 import epydeck
 import epyscan
+
 import epyrunner
 
 # Some arguments that can be passed into this function via the terminal
@@ -44,7 +45,7 @@ if args.verbose:
 
 # INITIAL RANDOM SAMPLING
 # -----------------------
-with open(script_path / template_deck_filename) as f:
+with Path.open(script_path / template_deck_filename) as f:
     deck = epydeck.load(f)
 
 parameters = {
@@ -62,7 +63,7 @@ campaign = epyscan.Campaign(deck, (script_path / campaign_dir_name))
 paths = [campaign.setup_case(sample) for sample in hypercube_samples]
 
 # Save the paths to a file on separate lines
-with open(simulation_path_filename, "w") as f:
+with Path.open(simulation_path_filename, "w") as f:
     [f.write(str(path) + "\n") for path in paths]
 
 if args.test:

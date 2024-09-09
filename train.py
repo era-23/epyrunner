@@ -1,17 +1,17 @@
-from IPython.display import display, Markdown
-import matplotlib.pyplot as plt
 from pathlib import Path
+
+import epydeck
+import matplotlib.pyplot as plt
+import numpy as np
 import pandas as pd
 import xarray as xr
-import numpy as np
-import epydeck
-
-from sklearn.model_selection import train_test_split
-from sklearn.preprocessing import MinMaxScaler
+from IPython.display import Markdown, display
 from sklearn.gaussian_process import GaussianProcessRegressor
 from sklearn.gaussian_process.kernels import RBF, ConstantKernel
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import MinMaxScaler
 
-np.random.seed(0)
+np.random.seed(0)  # noqa: NPY002
 
 
 def print_diff(training_list, testing_list, returned_list):
@@ -131,7 +131,7 @@ def display_plots(gpr, X_scaled, scaler, X_train, y_train):
     plt.show()
 
 
-def plot_actual_v_predicted(
+def plot_actual_v_predicted(  # noqa: PLR0913
     gpr: GaussianProcessRegressor,
     X: np.ndarray,
     y: np.ndarray,
@@ -164,7 +164,7 @@ def plot_actual_v_predicted(
             s=100,  # size of the markers
         )
 
-    plt.title("Gaussian process regression, R2=%.2f" % gpr.score(X, y))
+    plt.title(f"Gaussian process regression, R2={gpr.score(X, y):.2f}")
     plt.xlabel("Index")
     plt.ylabel(f"{attribute} [${units}$]")
     plt.legend()
@@ -177,9 +177,7 @@ def highest_uncertainty_indices(
     _, std = gpr.predict(X, return_std=True)
 
     # Find the indices of the points with the highest uncertainty
-    highest_uncertainty_indices = np.argsort(std)[-n_points:][::-1]
-
-    return highest_uncertainty_indices
+    return np.argsort(std)[-n_points:][::-1]
 
 
 # TODO: Fix this hack
@@ -187,7 +185,7 @@ script_path = Path("/Users/joel/Source/epoch_runner")
 simulation_path_filename = "paths.txt"
 
 # Load in the latest simulation runs
-with open(script_path / simulation_path_filename) as f:
+with Path.open(script_path / simulation_path_filename) as f:
     paths = [Path(path) for path in f.read().strip().split("\n")]
 
 
@@ -196,7 +194,7 @@ with open(script_path / simulation_path_filename) as f:
 X = {"intensity": [], "density": []}
 
 for path in paths:
-    with open(path / "input.deck") as f:
+    with Path.open(path / "input.deck") as f:
         deck = epydeck.load(f)
         X["intensity"].append(deck["constant"]["intens"])
         X["density"].append(deck["constant"]["nel"])
@@ -208,19 +206,23 @@ X = pd.DataFrame(X)
 y = {"Electron_Energy_Distribution_max_x": []}
 
 for path in paths:
-    df = xr.open_dataset(path / "0080.sdf")
-    calculate_eed(df)
-    da = df["Electron_Energy_Distribution"]
+    df_80 = xr.open_dataset(path / "0080.sdf")
+    calculate_eed(df_80)
+    electron_energy_distribution = df_80["Electron_Energy_Distribution"]
     x_coord_name = "X_Grid_mid"
     y_coord_name = "Y_Grid_mid"
-    flat_index = np.argmax(da.values)  # Get the flat index of the maximum value
+    flat_index = np.argmax(
+        electron_energy_distribution.values
+    )  # Get the flat index of the maximum value
 
     # Convert the flat index to multi-dimensional indices
-    max_indices = np.unravel_index(flat_index, da.shape)
+    max_indices = np.unravel_index(flat_index, electron_energy_distribution.shape)
 
     # Retrieve the coordinates corresponding to the indices
-    max_x_coord = da.coords[x_coord_name].values[max_indices[0]]
-    # max_y_coord = da.coords[y_coord_name].values[max_indices[1]]
+    max_x_coord = electron_energy_distribution.coords[x_coord_name].to_numpy()[
+        max_indices[0]
+    ]
+    # max_y_coord = electron_energy_distribution.coords[y_coord_name].to_numpy()[max_indices[1]]
 
     y["Electron_Energy_Distribution_max_x"].append(max_x_coord)
 
