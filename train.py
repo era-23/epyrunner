@@ -131,7 +131,7 @@ def display_plots(gpr, X_scaled, scaler, X_train, y_train):
     plt.show()
 
 
-def plot_actual_v_predicted(  # noqa: PLR0913
+def plot_actual_v_predicted(
     gpr: GaussianProcessRegressor,
     X: np.ndarray,
     y: np.ndarray,

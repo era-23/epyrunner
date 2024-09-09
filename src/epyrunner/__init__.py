@@ -60,7 +60,7 @@ class SlurmJob:
 
         return job_statuses
 
-    def enqueue_array_job(  # noqa: PLR0913
+    def enqueue_array_job(
         self,
         epoch_path: Path,
         epoch_version: str,
@@ -230,7 +230,7 @@ def _get_frame_title(dataset: xr.Dataset, frame: int, display_sdf_name: bool) ->
     return f"$t = {Quantity(time, 's').render(prec=3)}$, {sdf_name}"
 
 
-def generate_animation(  # noqa: PLR0913
+def generate_animation(
     dataset: xr.Dataset,
     target_attribute: str,
     folder_path: Optional[str] = None,

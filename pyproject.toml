@@ -69,4 +69,5 @@ ignore = [
     "PLR2004", # magic-comparison
     "B9",      # flake8-bugbear opinionated warnings
     "PTH123",  # Path.open instead of open
+    "PLR0913", # Too many functional arguments (>5)
 ]
