@@ -62,12 +62,12 @@ class SlurmJob:
 
     def enqueue_array_job(  # noqa: PLR0913
         self,
-        epoch_path: str,
-        epoch_version: Literal["epoch1d", "epoch2d", "epoch3d"],
-        campaign_path: str,
-        file_path: str,
-        template_path: str,
-        n_runs: str,
+        epoch_path: Path,
+        epoch_version: str,
+        campaign_path: Path,
+        file_paths: Path,
+        template_path: Path,
+        n_runs: int,
         job_name: str = "jobscript",
     ) -> str:
         """Run a simulation using the specified path
@@ -113,7 +113,7 @@ class SlurmJob:
             array_range_max=n_runs,
             epoch_dir=epoch_path,
             epoch_version=epoch_version,
-            file_path=file_path,
+            file_path=file_paths,
         )
 
         with Path.open(f"{campaign_path}/jobscript.sh", "w") as f:
