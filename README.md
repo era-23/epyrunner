@@ -36,6 +36,22 @@ cd epyrunner
 pip install .
 ```
 
+# Running
+## First time setup (only run once)
+First run the `random_sampling.py` script to create random latin hypercube samples over a set of parameters described in the file in the `parameters` variable.
+
+Example running command line input
+```bash
+python random_sampling.py --dir=$(pwd) --epochPath=~/scratch/epoch/epoch2d/ --numSimulations=1 --verbose
+```
+
+## Training
+After completion run the `train.py` script to run the model, no input parameters are required. It creates a simple Gaussian Process Regression (GPR) model and displays the 5 points with the highest uncertainty (largest standard deviation).
+
+NOTE: This does not currently save the model to a file
+NOTE: This is only a basic working example, requires heavy rework to correct.
+NOTE: Looping behaviour to recursively train the model is not implemented yet. See TODO section below
+
 # Initial run - random_sampling.py
 1. Run `epydeck` and generate the file paths for the input decks
 2. Create a new jobscript within the top level parent folder for the campaign and do the following:
@@ -47,9 +63,11 @@ pip install .
 	6. Rename the `file_path` to location of the txt file containing the deck paths. e.g. `paths.txt`
 
 # TODO
-Figure out how to cause the setup to trigger looping. Possibly by parent jobscript that runs setup.py, simulation and train.py. This can be accomplished using the `sbatch --parsable --dependency=afterok:JOBID` from https://hpc-unibe-ch.github.io/slurm/dependencies.html
+- Save GPR model after training
+- Consider replacing existing GPR training with https://github.com/bayesian-optimization/BayesianOptimization
+- Allow args to be passed into training to suggest most points
+- Figure out how to cause the setup to trigger looping. Possibly by parent jobscript that runs setup.py, simulation and train.py. This can be accomplished using the `sbatch --parsable --dependency=afterok:JOBID` from https://hpc-unibe-ch.github.io/slurm/dependencies.html
 
-Consider replacing existing GPR training with https://github.com/bayesian-optimization/BayesianOptimization
 # Looping run - train.py
 1. Load the `paths.txt` file with links to all the simulations and their respective input decks and for each path do the following:
 	1. `input.deck` - Select the desired features (e.g. "intensity" and "density")
