@@ -8,7 +8,10 @@ dynamic = ["version"]
 license = { file = "LICENCE" }
 requires-python = ">=3.9"
 readme = "README.md"
-authors = [{ name = "Joel Adams", email = "joel.adams@york.ac.uk" }]
+authors = [
+    { name = "Joel Adams", email = "joel.adams@york.ac.uk" },
+    { name = "Ethan Attwood", email = "ethan.attwood@york.ac.uk" },
+]
 dependencies = [
     "epydeck @ git+https://github.com/PlasmaFAIR/epydeck.git@main",
     "epyscan @ git+https://github.com/PlasmaFAIR/epyscan.git@main",
