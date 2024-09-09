@@ -107,9 +107,11 @@ job.enqueue_array_job(
     job_name="setup_run",
 )
 
-job.poll_jobs(interval=2)
-_, failed_jobs = job.get_job_results()
+print(f"Job submitted. {job.job_id}")
 
-if failed_jobs:
-    print("The following jobs failed", failed_jobs)
-    sys.exit("Initial/Setup simulation run failed. See job log files")
+# job.poll_jobs(interval=2)
+# _, failed_jobs = job.get_job_results()
+
+# if failed_jobs:
+#     print("The following jobs failed", failed_jobs)
+#     sys.exit("Initial/Setup simulation run failed. See job log files")
