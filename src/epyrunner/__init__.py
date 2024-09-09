@@ -116,7 +116,7 @@ class SlurmJob:
             file_path=file_paths,
         )
 
-        with Path.open(f"{campaign_path}/jobscript.sh", "w") as f:
+        with open(f"{campaign_path}/jobscript.sh", "w") as f:
             f.write(s)
 
         process = subprocess.run(

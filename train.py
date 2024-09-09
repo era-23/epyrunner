@@ -185,7 +185,7 @@ script_path = Path("/Users/joel/Source/epoch_runner")
 simulation_path_filename = "paths.txt"
 
 # Load in the latest simulation runs
-with Path.open(script_path / simulation_path_filename) as f:
+with open(script_path / simulation_path_filename) as f:
     paths = [Path(path) for path in f.read().strip().split("\n")]
 
 
@@ -194,7 +194,7 @@ with Path.open(script_path / simulation_path_filename) as f:
 X = {"intensity": [], "density": []}
 
 for path in paths:
-    with Path.open(path / "input.deck") as f:
+    with open(path / "input.deck") as f:
         deck = epydeck.load(f)
         X["intensity"].append(deck["constant"]["intens"])
         X["density"].append(deck["constant"]["nel"])

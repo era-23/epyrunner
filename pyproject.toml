@@ -39,6 +39,7 @@ write_to = "src/epyrunner/_version.py"
 [tool.ruff]
 line-length = 88
 target-version = "py39"
+ignore = ["PTH123"]
 
 [tool.ruff.lint]
 extend-select = [
