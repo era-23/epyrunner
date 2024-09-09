@@ -11,6 +11,7 @@ tramp
 .DS_Store
 paths.txt
 .vscode
+src/epyfunc/_version.py
 
 # Org-mode
 .org-id-locations
