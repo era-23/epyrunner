@@ -65,6 +65,7 @@ NOTE: Looping behaviour to recursively train the model is not implemented yet. S
 # TODO
 - Save GPR model after training
 - Consider replacing existing GPR training with https://github.com/bayesian-optimization/BayesianOptimization
+- Eventually migrate to pyspark
 - Allow args to be passed into training to suggest most points
 - Figure out how to cause the setup to trigger looping. Possibly by parent jobscript that runs setup.py, simulation and train.py. This can be accomplished using the `sbatch --parsable --dependency=afterok:JOBID` from https://hpc-unibe-ch.github.io/slurm/dependencies.html
 
