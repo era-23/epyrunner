@@ -1,0 +1,10 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it as below."
+authors:
+  - family-names: "Adams"
+    given-names: "Joel L."
+    orcid: "https://orcid.org/0009-0005-4889-5231"
+    affiliation: "University of York"
+title: "Epyrunner - A python package for running SLURM jobs on HPC clusters for EPOCH simulations"
+version: "0.1.0"
+date-released: 2024-09-06
