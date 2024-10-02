@@ -41,13 +41,20 @@ parser.add_argument(
     required=True,
     help="Number of simulations to run",
 )
+parser.add_argument(
+    "--campaign",
+    action="store",
+    type=str,
+    required=False,
+    help="Name of campaign for folder structure",
+)
 args = parser.parse_args()
 
 # Paths setup
 script_path = Path(args.dir)
 template_deck_filename = script_path / "template.deck"
 template_jobscript_filename = script_path / "template.sh"
-campaign_dir_name = script_path / "example_campaign"
+campaign_dir_name = script_path / args.campaign if args.campaign is not None else "example_campaign"
 simulation_dir_paths = script_path / "paths.txt"
 
 epoch = Path(args.epochPath)
