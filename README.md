@@ -23,7 +23,7 @@ For this script to work correctly you need to have the following folder structur
 
 # Installation 
 ## EPOCH Installation
-Prior to installing this package you must first have EPOCH installed. If you do not have it currently installed I have attached a handy guide here [[Installing_EPOCH]]
+Prior to installing this package you must first have EPOCH installed. If you do not have it currently installed I have attached a handy guide here at the [Installing_EPOCH.md](Installing_EPOCH.md) file.
 
 ## Virtual Environments
 Once this is installed please create a [virtual python environment](https://docs.python.org/3/library/venv.html) using the following steps.
