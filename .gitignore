@@ -228,3 +228,6 @@ cython_debug/
 
 # Version file from setuptools-scm
 src/epyfunc/_version.py
+
+#example_campaign from testing
+example_campaign/

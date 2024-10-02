@@ -70,8 +70,10 @@ with open(template_deck_filename) as f:
     deck = epydeck.load(f)
 
 parameters = {
-    "constant:intens": {"min": 1.0e22, "max": 1.0e24, "log": True},
-    "constant:nel": {"min": 1.0e20, "max": 1e24, "log": True},
+    "constant:background_density": {"min": 1.0e18, "max": 1.0e20, "log": True},
+    "constant:frac_beam": {"min": 1.0e-4, "max": 1.0e-2, "log": True},
+    "constant:b0_strength": {"min": 0.5, "max": 5.0, "log": False},
+    "constant:b0_angle": {"min": 80, "max": 100, "log": False}, # Angle of B relative to x
 }
 
 # Sets up sampling of simulation and specifies number of times to run each simulation
