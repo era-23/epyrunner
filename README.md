@@ -28,19 +28,26 @@ Prior to installing this package you must first have EPOCH installed. If you do 
 ## Virtual Environments
 Once this is installed please create a [virtual python environment](https://docs.python.org/3/library/venv.html) using the following steps.
 
-RECOMMENDED: We recommend using the `uv` package to speed up `pip`. It can be installed on any operating system that has python installed by running `pip install uv` OR `pip3 install uv`
+> [!TIP]
+> We recommend using the `uv` package to speed up `pip`. It can be installed on any operating system that has python installed by running `pip install uv` OR `pip3 install uv`
 
+> [!IMPORTANT]  
+> When creating a virtual environment it will be located in the folder where you run the venv creation command using one the below options
 ### Using `uv`
 - Install uv to manage packages `pip install uv`
 - Restart your shell `exec $SHELL`
-- Create a new virtual environment (venv) using `uv venv`. NOTE: your virtual env is located in the directory you run the above command
+- Create a new virtual environment (venv) using `uv venv`
 - Activate your venv using `source .venv/bin/activate`
 
 ### Using Regular `pip`
-- Create a new virtual environment (venv) using `python -m venv .` NOTE: your virtual env is located in the directory you run the above command
+- Create a new virtual environment (venv) using `python -m venv .`
 - Activate your venv using `source .venv/bin/activate`
 
 ## Project Installation
+> [!IMPORTANT]  
+> If running on Viking we recommend running all of the following commands in your `~/scratch` folder. Please note that data is only retained in this folder for a certain amount of time and is not backed up. See https://vikingdocs.york.ac.uk/getting_started/storage_on_viking.html
+
+To use this project on Viking please log in using `ssh` and run the following from within the `~/scratch` folder:
 ```bash
 git clone https://github.com/JoelLucaAdams/epyrunner
 cd epyrunner
