@@ -25,7 +25,7 @@ parser.add_argument(
     action="store",
     type=str,
     required=True,
-    help="Parent directory containing this script",
+    help="The epyrunner directory",
 )
 parser.add_argument(
     "--epochPath",
