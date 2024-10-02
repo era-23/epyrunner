@@ -1,3 +1,5 @@
+# Installing EPOCH
+
 1. `cd scratch`
 2. `git clone --recursive https://github.com/Warwick-Plasma/epoch.git`
 3. `cd epoch/epoch2d`
@@ -9,6 +11,7 @@
 9. Copy an existing deck file over (e.g. `example_decks/qed_rese.deck`) `cp example_decks/qed_rese.deck test1/input.deck`. NOTE: deck must always be called `input.deck`
 10. Navigate to the `~/scratch` directory and create a jobscript using `nano jobscript.sh` and copy in the bash script attached at the bottom of this file. NOTE: Please change the `user.email` to be your normal username
 11. Finally run `sbatch jobscript.sh` and wait for completion
+
 ```bash
 #!/usr/bin/env bash
 
