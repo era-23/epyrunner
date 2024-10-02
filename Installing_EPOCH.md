@@ -6,7 +6,7 @@
 6. `module load OpenMPI/3.1.3-GCC-8.2.0-2.31.1`
 7. `make COMPILER=gfortran --debug -j4`
 8. Create a new simulation folder for epoch `mkdir test1`
-9. Copy an existing deck file over (e.g. `example_decks/qed_rese`) `cp example_decks/qed_rese test1/input.deck`. NOTE: deck must always be called `input.deck`
+9. Copy an existing deck file over (e.g. `example_decks/qed_rese.deck`) `cp example_decks/qed_rese.deck test1/input.deck`. NOTE: deck must always be called `input.deck`
 10. Navigate to the `~/scratch` directory and create a jobscript using `nano jobscript.sh` and copy in the bash script attached at the bottom of this file. NOTE: Please change the `user.email` to be your normal username
 11. Finally run `sbatch jobscript.sh` and wait for completion
 ```bash
