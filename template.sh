@@ -49,7 +49,7 @@ fi
 echo "Running deck file: $deck_path"
 
 # Script initialisation
-mpiexec -n $SLURM_NTASKS {epoch_dir}/{epoch_version}/bin/{epoch_version} <<< $deck_path
+srun {epoch_dir}/{epoch_version}/bin/{epoch_version} <<< $deck_path
 
 # Job completed
 echo '\n'Job completed at `date`
