@@ -3,6 +3,7 @@
 #SBATCH --job-name={job_name}
 #SBATCH --ntasks=96
 #SBATCH --partition=nodes
+#SBATCH --exclusive
 #SBATCH --time=02-00:00:00 # Time limit (DD-HH:MM:SS)
 #SBATCH --account=pet-pic-2022
 #SBATCH --output={campaign_path}/%x_%A_%a.log
