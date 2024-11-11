@@ -19,7 +19,7 @@ module purge
 
 # Load modules
 module load Python/3.11.3-GCCcore-12.3.0
-module load OpenMPI/3.1.3-GCC-8.2.0-2.31.1
+module load OpenMPI/4.1.6-GCC-13.2.0
 
 #source .venv/bin/activate
 #python -c 'import os; print(os.environ['VIRTUAL_ENV'])'
