@@ -13,9 +13,9 @@ authors = [
     { name = "Ethan Attwood", email = "ethan.attwood@york.ac.uk" },
 ]
 dependencies = [
-    "epydeck @ git+https://github.com/PlasmaFAIR/epydeck.git@main",
-    "epyscan @ git+https://github.com/PlasmaFAIR/epyscan.git@main",
-    "sdf-xarray @ git+https://github.com/PlasmaFAIR/sdf-xarray.git@main",
+    "epydeck >= 1.0.0",
+    "epyscan >= 0.1.0",
+    "sdf-xarray >= 0.1.2",
     "matplotlib >= 3.9.0",
     "IPython >= 8.20.0",
     "numpy >= 2.0.0",

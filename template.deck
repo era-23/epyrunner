@@ -1,13 +1,22 @@
 begin:constant
-  background_density = 1e18
+  background_density = 1e19
   background_temp = 1e8
   frac_beam = 1e-3
   ion_mass_e = 1836.2
-  mass_ion = me * ion_mass_e
-  ring_beam_energy = 1.0e6
-  pring_beam = sqrt(2 * mass_ion * qe * ring_beam_energy)
-  pbeam = pring_beam * sin(-pi/3)
-  pring = pring_beam * cos(-pi/3)
+  mass_background_ion = me * ion_mass_e
+  mass_fast_ion = me * ion_mass_e
+  background_mass_density = background_density * mass_background_ion * (1.0 - frac_beam)
+  b0_strength = 3.0
+  # Angle between B and x (predominantly in Z)
+  b0_angle = 90
+  alfven_velo = b0_strength / sqrt(mu0 * background_mass_density)
+  v_perp_ratio = 1.0
+  v_perp = v_perp_ratio * alfven_velo
+  theta = -pi/3
+  # Ring beam momentum includes calculation of E based on v_perp_ratio
+  pring_beam = mass_fast_ion * v_perp * sqrt(1.0 / cos(theta)^2)
+  pbeam = pring_beam * sin(theta)
+  pring = pring_beam * cos(theta)
 
   p_ring_th = pring_beam / 100
   p_beam_th = pring_beam / 1000
@@ -15,22 +24,16 @@ begin:constant
   px_min_limit = (pring - 6*p_ring_th gt 0) * (pring - 6*p_ring_th)
   px_peak = pring / 2 * (1 + sqrt(1 + (2*p_ring_th/pring)^2))
 
-  vel_ion = sqrt(2 * kb * background_temp / mass_ion)
+  vel_ion = sqrt(2 * kb * background_temp / mass_fast_ion)
   # nxgrid = 300
   # x_length = nxgrid * grid_spacing
 
-  b0_strength = 0.0
-  # Angle between B and x (predominantly in Z)
-  b0_angle = 90
-
-  ion_gyrofrequency = (qe * b0_strength) / (2.0 * pi * mass_ion)
+  ion_gyrofrequency = (qe * b0_strength) / (2.0 * pi * mass_fast_ion)
   ion_gyroperiod = 1.0 / ion_gyrofrequency
-  bkgd_mass_density = mass_ion * background_density * (1.0 - frac_beam)
-  alfven_velo = b0_strength / sqrt(mu0 * bkgd_mass_density)
 
   lambda_db = sqrt(epsilon0 * kb * background_temp / background_density / qe^2)
-  grid_spacing = lambda_db * 0.5
-  num_cells = 10000
+  grid_spacing = lambda_db
+  num_cells = 20000
 
   num_time_samples = 1000.0
   nyquist_omega = 40.0 * ion_gyrofrequency
@@ -40,7 +43,7 @@ begin:constant
   # nyquist_k = 40.0 * (ion_gyrofrequency / alfven_velo)
   domain_length = num_cells * grid_spacing
   
-  diagtime = simtime * (1 / num_time_samples)
+  diagtime = simtime / num_time_samples
 
   # Not sure what these do
   # simtime_ij = x_length / vel_ion
@@ -59,6 +62,9 @@ begin:control
   # size of domain
   x_min = 0.0
   x_max = num_cells * grid_spacing
+
+  # Smooth currents
+  smooth_currents = T  
 end:control
 
 
@@ -79,9 +85,11 @@ begin:species
   name = proton
   charge = 1.0
   mass = ion_mass_e
-  frac = 0.3
+  frac = 0.1
   number_density = background_density * (1.0 - frac_beam)
+  number_density_back = background_density * (1.0 - frac_beam)
   temp = background_temp
+  temp_back = background_temp
 end:species
 
 
@@ -89,17 +97,19 @@ begin:species
   name = electron
   charge = -1.0
   mass = 1.0
-  frac = 0.3
+  frac = 0.1
   temp = background_temp / 100
+  temp_back = background_temp / 100
   number_density = background_density
+  number_density_back = background_density
 end:species
 
 
 begin:species
   name = ion_ring_beam
   charge = 1.0
-  mass = 2.0 * ion_mass_e
-  frac = 0.4
+  mass = ion_mass_e
+  frac = 0.8
   number_density = background_density * frac_beam
 
   dist_fn = px / px_peak * exp(-0.5 * ((px - pring) / p_ring_th)^2) \
@@ -117,26 +127,27 @@ begin:output
   # number of timesteps between output dumps
   dt_snapshot = diagtime
   # Number of dt_snapshot between full dumps
-  full_dump_every = 100
-  force_final_to_be_restartable = T
+  full_dump_every = 100000
+  force_final_to_be_restartable = F
 
   # Properties at particle positions
-  particles = full
-  particle_weight = full
-  vx = always
-  vy = always
-  vz = always
+  particles = never
+  particle_weight = never
+  vx = never
+  vy = never
+  vz = never
 
   # Properties on grid
   grid = always
   ex = always
   ey = always
   ez = always
+  bx = always
   by = always
   bz = always
-  ekbar = always
-  charge_density = always + species
-  number_density = always + species
+  ekbar = always + species
+  charge_density = never
+  number_density = never
 
   #Extended IO
   distribution_functions = never
