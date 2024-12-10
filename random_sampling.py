@@ -25,7 +25,7 @@ parser.add_argument(
     action="store",
     type=str,
     required=True,
-    help="Parent directory containing this script",
+    help="The epyrunner directory",
 )
 parser.add_argument(
     "--epochPath",
@@ -42,11 +42,11 @@ parser.add_argument(
     help="Number of simulations to run",
 )
 parser.add_argument(
-    "--campaign",
+    "--campaignName",
     action="store",
     type=str,
-    required=False,
-    help="Name of campaign for folder structure",
+    required=True,
+    help="The campagin directory name",
 )
 args = parser.parse_args()
 
@@ -54,7 +54,7 @@ args = parser.parse_args()
 script_path = Path(args.dir)
 template_deck_filename = script_path / "template.deck"
 template_jobscript_filename = script_path / "template.sh"
-campaign_dir_name = script_path / args.campaign if args.campaign is not None else "example_campaign"
+campaign_dir_name = script_path / args.campaignName
 simulation_dir_paths = script_path / "paths.txt"
 
 epoch = Path(args.epochPath)
@@ -113,7 +113,7 @@ job.enqueue_array_job(
     file_paths=simulation_dir_paths,
     template_path=template_jobscript_filename,
     n_runs=len(paths),
-    job_name="setup_run",
+    job_name=args.campaignName,
 )
 
 print(f"Job submitted. {job.job_id}")

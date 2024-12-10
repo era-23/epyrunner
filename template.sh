@@ -3,6 +3,7 @@
 #SBATCH --job-name={job_name}
 #SBATCH --ntasks=96
 #SBATCH --partition=nodes
+#SBATCH --exclusive
 #SBATCH --time=02-00:00:00 # Time limit (DD-HH:MM:SS)
 #SBATCH --account=pet-pic-2022
 #SBATCH --output={campaign_path}/%x_%A_%a.log
@@ -18,7 +19,7 @@ module purge
 
 # Load modules
 module load Python/3.11.3-GCCcore-12.3.0
-module load OpenMPI/3.1.3-GCC-8.2.0-2.31.1
+module load OpenMPI/4.1.6-GCC-13.2.0
 
 #source .venv/bin/activate
 #python -c 'import os; print(os.environ['VIRTUAL_ENV'])'
@@ -49,7 +50,7 @@ fi
 echo "Running deck file: $deck_path"
 
 # Script initialisation
-mpiexec -n $SLURM_NTASKS {epoch_dir}/{epoch_version}/bin/{epoch_version} <<< $deck_path
+srun {epoch_dir}/{epoch_version}/bin/{epoch_version} <<< $deck_path
 
 # Job completed
 echo '\n'Job completed at `date`
